@@ -1,2 +1,9 @@
-tree("Root")
-	Succeed
+tree("Patrol")
+	sequence
+		Idle
+		not DroneHaveParts	// stop if the drone has the parts
+		while IsPlayerNear
+			sequence
+				LookAtPlayer
+				while PlayerHaveParts
+					WaitForParts

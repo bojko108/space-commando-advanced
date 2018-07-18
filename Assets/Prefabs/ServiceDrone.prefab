@@ -460,7 +460,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4058287851423144}
+  - component: {fileID: 135692404433934254}
   - component: {fileID: 82065977528165050}
+  - component: {fileID: 114778571963176306}
+  - component: {fileID: 114753295505754508}
+  - component: {fileID: 54700852873940166}
   m_Layer: 0
   m_Name: ServiceDrone
   m_TagString: ServiceDrone
@@ -515,7 +519,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1968734998299028}
   m_LocalRotation: {x: 0, y: 0.861939, z: 0, w: 0.50701195}
-  m_LocalPosition: {x: 141.91, y: 5.1, z: 78.6}
+  m_LocalPosition: {x: 126.42, y: 5.1, z: 77.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4773574666570632}
@@ -1105,7 +1109,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 144551f19377db744bd026a9ce9f90ad, type: 2}
+  - {fileID: 2100000, guid: 491546d9cdf50c54fb524820618fbb0d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1895,6 +1899,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1424582833446606}
   m_Mesh: {fileID: 4300042, guid: c3fa9cd4f00ab654c8fb78b615af5ac6, type: 3}
+--- !u!54 &54700852873940166
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1968734998299028}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!82 &82065977528165050
 AudioSource:
   m_ObjectHideFlags: 1
@@ -2026,3 +2045,68 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114753295505754508
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1968734998299028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4322644a47c9a40b766143b293e682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EngineLocation: {fileID: 0}
+  WorkingLocation: {fileID: 0}
+  PlayerTransform: {fileID: 0}
+  DetectPlayerDistance: 10
+  Speed: 5
+  RotationSpeed: 10
+  RepairTime: 5
+  PartsFound: 1
+  ShipRepaired: 0
+--- !u!114 &114778571963176306
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1968734998299028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e43e7170fb45b4b81dcd16d0ff55d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scripts:
+  - {fileID: 4900000, guid: 4885e3147ba50414db7968d5b7109c88, type: 3}
+  - {fileID: 4900000, guid: aaa96416926b5434694f785a0b9e6251, type: 3}
+  - {fileID: 4900000, guid: 875845e25e9cf50468bffd2adeae1716, type: 3}
+  autoReset: 1
+  tickOn: 0
+  sourceInfos:
+  - isFoldout: 1
+    breakPoints: 
+    breakPointStatuses: 
+    collapsedLines: 
+    btScript: 
+  - isFoldout: 1
+    breakPoints: 
+    breakPointStatuses: 
+    collapsedLines: 
+    btScript: 
+  - isFoldout: 1
+    breakPoints: 
+    breakPointStatuses: 
+    collapsedLines: 
+    btScript: 
+--- !u!135 &135692404433934254
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1968734998299028}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0}
