@@ -16,7 +16,7 @@ namespace Assets.Scripts.SaveLoad
         /// set this to TRUE when the player dies
         /// </summary>
         public static bool IsPlayerDead = false;
-        
+
         private static string fileName = String.Format("{0}/{1}", Application.persistentDataPath, Resources.Various.SaveFileName);
 
         /// <summary>
@@ -53,14 +53,14 @@ namespace Assets.Scripts.SaveLoad
         {
             Player player = SavePlayer();
 
-            Drone drone = SaveDrone();
+            List<Drone> drones = new List<Drone>();
+            drones.Add(SaveDrone(GameObject.FindGameObjectWithTag(Resources.Tags.BattleDrone)));
+            drones.Add(SaveDrone(GameObject.FindGameObjectWithTag(Resources.Tags.ServiceDrone)));
 
             List<Character> enemies = SaveEnemies();
-            
+
             gameProgress.Player = player;
-
-            gameProgress.Drone = drone;
-
+            gameProgress.Drones = drones;
             gameProgress.Enemies = new List<Character>();
             gameProgress.Enemies.AddRange(enemies);
 
@@ -119,14 +119,23 @@ namespace Assets.Scripts.SaveLoad
             return player;
         }
 
-        private static Drone SaveDrone()
+        private static Drone SaveDrone(GameObject droneGO)
         {
-            GameObject droneGO = GameObject.FindGameObjectWithTag(Resources.Tags.Drone);
-
             Drone drone = new Drone();
             drone.Tag = droneGO.tag;
-            drone.InAttack = droneGO.GetComponent<Animator>().GetBool("InAttack");
-            drone.InScan = droneGO.GetComponent<Animator>().GetBool("InScan");
+
+            // service drone does not have animator... for now
+            if (droneGO.GetComponent<Animator>() != null)
+            {
+                drone.InAttack = droneGO.GetComponent<Animator>().GetBool("InAttack");
+                drone.InScan = droneGO.GetComponent<Animator>().GetBool("InScan");
+            }
+
+            // save service drone props
+            if (droneGO.GetComponent<ServiceDroneBT>() != null)
+            {
+                drone.PartsDelivered = droneGO.GetComponent<ServiceDroneBT>().partsDelivered;
+            }
 
             Vector position, rotation;
 
@@ -139,7 +148,7 @@ namespace Assets.Scripts.SaveLoad
         }
 
         /// <summary>
-        /// saves all alive enemies
+        /// saves all live enemies
         /// </summary>
         /// <returns></returns>
         private static List<Character> SaveEnemies()
@@ -156,7 +165,7 @@ namespace Assets.Scripts.SaveLoad
                     enemy.IsChasing = enemyGO.GetComponent<EnemyMovement>().IsChasing;
                     enemy.IsScared = enemyGO.GetComponent<EnemyMovement>().IsScared;
                     enemy.Stop = enemyGO.GetComponent<EnemyMovement>().Stop;
-                    
+
                     Vector position, rotation;
 
                     ExtractPosition(enemyGO.transform, out position, out rotation);

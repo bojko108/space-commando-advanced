@@ -31,7 +31,8 @@ public static class Resources
         public const string GetItem = "Press F to get Dark Matter Module";
         public const string RepairShip = "Press F to repair Spaceship";
         public const string FindDarkMatterModule = "Find Dark Matter Module to repair Spaceship!";
-        public const string RepairingShip = "Repairing ship. Stay close to avoid process interruption!";
+        //public const string RepairingShip = "Repairing ship. Stay close to avoid process interruption!";
+        public const string RepairingShip = "Repairing ship!";
         public const string BoardShip = "Press F to get on board";
         public const string KillBaseCommanders = "Base Commanders are blocking the runway!";
     }
@@ -40,6 +41,8 @@ public static class Resources
     {
         public const string PlayerEnteredImportantArea = "PlayerEnteredImportantArea";
         public const string PlayerExitedImportantArea = "PlayerExitedImportantArea";
+        public const string PlayerHasDarkMatterModule = "PlayerHasDarkMatterModule";
+        public const string SpaceshipRepaired = "SpaceshipRepaired";
         public const string MainComputerFound = "MainComputerFound";
         public const string StorageRoomFound = "StorageRoomFound";
         public const string DarkMatterModuleFound = "DarkMatterModuleFound";
@@ -78,7 +81,8 @@ public static class Resources
     {
         public const string MapProperties = "MapProperties";
         public const string Player = "Player";
-        public const string Drone = "Drone";
+        public const string BattleDrone = "Drone";
+        public const string ServiceDrone = "ServiceDrone";
         public const string MainCamera = "MainCamera";
         public const string MainComputer = "MainComputer";
         public const string StorageRoom = "StorageRoom";

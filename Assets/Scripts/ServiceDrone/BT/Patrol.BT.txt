@@ -5,5 +5,6 @@ tree("Patrol")
 		while IsPlayerNear
 			sequence
 				LookAtPlayer
+				CheckParts
 				while PlayerHaveParts
 					WaitForParts

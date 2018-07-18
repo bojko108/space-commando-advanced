@@ -28,6 +28,6 @@ namespace Assets.Scripts.SaveLoad
         /// </summary>
         public List<Character> Enemies;
 
-        public Drone Drone;
+        public List<Drone> Drones;
     }
 }

@@ -1,49 +1,131 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Panda;
+using UnityEngine.Events;
 
 public class ServiceDroneBT : MonoBehaviour
 {
-    // set reference to engine location used when the drone starts repairing the ship
+    [Tooltip("Set reference to engine location used when the drone starts repairing the ship")]
     public Transform EngineLocation;
-    // set reference to drone's working position
+    [Tooltip("Set reference to drone's working position")]
     public Transform WorkingLocation;
-    // set reference to the player position
+    [Tooltip("Set reference to the player position")]
     public Transform PlayerTransform;
+    [Tooltip("Distance to detect player")]
     public float DetectPlayerDistance = 1f;
 
-    // set drone move speed
+    [Tooltip("Set drone move speed")]
     public float Speed = 5f;
-    // set rotation speed
+    [Tooltip("Set rotation speed")]
     public float RotationSpeed = 10f;
 
-    // set ship repair time in seconds
+    [Tooltip("Set ship repair time in seconds")]
     public float RepairTime = 5f;
 
+    [Tooltip("Displays important messages to the player")]
+    public GameObject InfoText;
+
     // are the parts found by the player?
-    public bool PartsFound = false;
+    private bool partsFound = false;
     // is the ship repaired?
-    public bool ShipRepaired = false;
+    private bool shipRepaired = false;
 
     // TRUE if the player delivered the parts to the drone
-    private bool partsDelivered = false;
-    
+    [HideInInspector]   // public because can be saved in GameSaveLoad.SaveDrone()
+    public bool partsDelivered = false;
+
+    // TRUE to start boarding ship
+    [HideInInspector]   // public because can be saved in GameSaveLoad.SaveDrone()
+    public bool boardShip = false;
+
     private IEnumerator waitForParts;
+    private IEnumerator waitForBoardCommand;
     private IEnumerator repairingShip;
     
+    // displays repairing progress
+    private Slider repairingSlider;
+
+    private ShipEngineScript shipEngine;
+
+    private UnityAction onPlayerHasDarkMatterModule;
+    private UnityAction onSpaceshipRepaired;
+
+    private void Awake()
+    {
+        this.onPlayerHasDarkMatterModule = new UnityAction(this.OnPlayerHasDarkMatterModule);
+        EventManager.On(Resources.Events.PlayerHasDarkMatterModule, this.onPlayerHasDarkMatterModule);
+
+        this.onSpaceshipRepaired = new UnityAction(this.OnSpaceshipRepaired);
+        EventManager.On(Resources.Events.SpaceshipRepaired, this.onSpaceshipRepaired);
+
+        this.shipEngine = GameObject.FindGameObjectWithTag(Resources.Tags.Ship).GetComponent<ShipEngineScript>();
+        
+        this.repairingSlider = GameObject.FindGameObjectWithTag(Resources.Tags.RepairSlider).GetComponent<Slider>();
+        this.repairingSlider.gameObject.SetActive(false);  // hide from screen
+        this.repairingSlider.minValue = 0f;
+        this.repairingSlider.maxValue = this.RepairTime;
+    }
+
+    // used when loading saved game
+    public void SetStatus(bool partsAreDelivered)
+    {
+        this.partsDelivered = partsAreDelivered;
+    }
+
+    // this event is emitted from GameManager script
+    private void OnPlayerHasDarkMatterModule()
+    {
+        this.partsFound = true;
+    }
+
+    // this event is emitted from GameManager script
+    private void OnSpaceshipRepaired()
+    {
+        this.shipRepaired = true;
+    }
+
     [Task]
     private void Idle()
     {
+        this.HideInfoText();
+
         Task.current.debugInfo = string.Format("[Info = {0}]", "asdsadasd");
         Task.current.Succeed();
     }
 
     [Task]
-    private void ShipReadyForTakeOff()
+    private void BoardShip()
     {
-        Task.current.debugInfo = "[Ship Ready!]";
-        Task.current.Succeed();
+        // base commanders are blocking the runway, so kill them!
+        int baseCommandersCount = GameObject.FindGameObjectsWithTag(Resources.Tags.BaseCommander).Length;
+        bool finishGame = baseCommandersCount < 1;
+        if (finishGame)
+        {
+            EventManager.Emit(Resources.Events.GameFinish);
+        }
+        else
+        {
+            this.DisplayInfoText(Resources.Messages.KillBaseCommanders);
+        }
+
+        Task.current.Complete(finishGame);
+    }
+
+    [Task]
+    private void WaitForBoardCommand()
+    {
+        Task task = Task.current;
+
+        if (task.isStarting)
+        {
+            if (this.waitForBoardCommand != null) StopCoroutine(this.waitForBoardCommand);
+            this.waitForBoardCommand = this.WaitForBoardCommandEnumerator();
+            StartCoroutine(this.waitForBoardCommand);
+        }
+
+        Task.current.Complete(this.boardShip);
     }
 
     #region Patrol Specific
@@ -74,8 +156,7 @@ public class ServiceDroneBT : MonoBehaviour
     [Task]
     private bool PlayerHaveParts()
     {
-        // use EventManager to listen for DarkMatterModuleFound....
-        return this.PartsFound;
+        return this.partsFound;
     }
 
     [Task]
@@ -87,7 +168,18 @@ public class ServiceDroneBT : MonoBehaviour
     [Task]
     private bool IsShipRepaired()
     {
-        return this.ShipRepaired;
+        return this.shipRepaired;
+    }
+
+    [Task]
+    private void CheckParts()
+    {
+        if (this.partsFound == false)
+        {
+            this.DisplayInfoText(Resources.Messages.FindDarkMatterModule);
+        }
+
+        Task.current.Succeed();
     }
 
     [Task]
@@ -113,7 +205,7 @@ public class ServiceDroneBT : MonoBehaviour
         // calculate rotation and move vector to working location
         Vector3 direction = this.WorkingLocation.position - this.transform.position;
         Quaternion rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), this.RotationSpeed * Time.deltaTime);
-        
+
         this.transform.rotation = rotation;
 
         this.transform.Translate(0, 0, this.Speed * Time.deltaTime);
@@ -121,7 +213,6 @@ public class ServiceDroneBT : MonoBehaviour
         Debug.DrawLine(this.transform.position, this.WorkingLocation.position);
 
         bool distanceIsOk = direction.magnitude < 1f;
-        //this.RotationSpeed = distanceIsOk ? 2f : this.RotationSpeed;
 
         Task.current.Complete(distanceIsOk);
     }
@@ -146,23 +237,45 @@ public class ServiceDroneBT : MonoBehaviour
 
         if (task.isStarting)
         {
-            this.ShipRepaired = false;
+            this.shipRepaired = false;
 
             if (this.repairingShip != null) StopCoroutine(this.repairingShip);
             this.repairingShip = this.RepairingShipEnumerator();
             StartCoroutine(this.repairingShip);
+
+            this.DisplayInfoText(Resources.Messages.RepairingShip);
         }
-        else
+
+        if (this.shipRepaired)
         {
-            if (this.ShipRepaired)
-            {
-                Task.current.Succeed();
-            }
+            this.shipEngine.Repaired();
+
+            Task.current.Succeed();
         }
+    }
+
+    private IEnumerator WaitForBoardCommandEnumerator()
+    {
+        this.DisplayInfoText(Resources.Messages.BoardShip);
+
+        while (true)
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                this.boardShip = true;
+                break;
+            }
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        this.HideInfoText();
     }
 
     private IEnumerator WaitForPartsEnumerator()
     {
+        this.DisplayInfoText("Press F to deliver the Dark Matter Module");
+
         while (true)
         {
             if (Input.GetKeyDown(KeyCode.F))
@@ -173,14 +286,42 @@ public class ServiceDroneBT : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
+
+        this.HideInfoText();
     }
 
     private IEnumerator RepairingShipEnumerator()
     {
-        yield return new WaitForSeconds(this.RepairTime);
+        this.repairingSlider.gameObject.SetActive(true);
 
-        this.ShipRepaired = true;
+        while (this.shipRepaired == false)
+        {
+            if (this.repairingSlider.value < this.repairingSlider.maxValue)
+            {
+                this.repairingSlider.value += 1;
+                yield return new WaitForSeconds(1f);
+            }
+            else
+            {
+                this.shipRepaired = true;
+            }
+        }
+
+        this.repairingSlider.gameObject.SetActive(false);
     }
 
     #endregion
+
+
+
+    private void DisplayInfoText(string text)
+    {
+        this.InfoText.transform.localScale = Vector3.one;
+        this.InfoText.GetComponent<Text>().text = text;
+    }
+
+    private void HideInfoText()
+    {
+        this.InfoText.transform.localScale = Vector3.zero;
+    }
 }

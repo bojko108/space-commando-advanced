@@ -53,8 +53,18 @@ namespace Assets.Scripts.SaveLoad
     [Serializable]
     public class Drone : Character
     {
+        /// <summary>
+        /// battle drone mode
+        /// </summary>
         public bool InScan;
+        /// <summary>
+        /// battle drone mode
+        /// </summary>
         public bool InAttack;
+        /// <summary>
+        /// has the player delivered the dark matter module to the service drone?
+        /// </summary>
+        public bool PartsDelivered;
     }
 
     /// <summary>

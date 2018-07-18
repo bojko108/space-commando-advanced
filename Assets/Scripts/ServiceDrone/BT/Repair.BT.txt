@@ -1,11 +1,12 @@
 tree("Repair")
-	fallback
-		while IsShipRepaired
-			sequence
-				ShipReadyForTakeOff
-				LookAtPlayer
 		while DroneHaveParts
-			sequence
-				GoToShip
-				FaceTheEngine
-				RepairShip
+			fallback
+				while IsShipRepaired
+					sequence
+						LookAtPlayer
+						WaitForBoardCommand
+						BoardShip
+				sequence
+					GoToShip
+					FaceTheEngine
+					RepairShip

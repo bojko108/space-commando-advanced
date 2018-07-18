@@ -40,7 +40,7 @@ public class ShipEngineScript : MonoBehaviour
 
     public void Repaired()
     {
-        this.sphereCollider.radius = this.repairingRadius;
+        //this.sphereCollider.radius = this.repairingRadius;
 
         this.engine.SetActive(false);
         CancelInvoke("AnimateShipEngine");

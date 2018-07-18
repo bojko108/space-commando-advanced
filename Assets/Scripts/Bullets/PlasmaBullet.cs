@@ -8,6 +8,6 @@ public class PlasmaBullet : BulletScript {
     {
         base.OnAwake();
 
-        this.ShootingScript = GameObject.FindGameObjectWithTag(Resources.Tags.Drone).GetComponentInChildren<DroneShooting>();
+        this.ShootingScript = GameObject.FindGameObjectWithTag(Resources.Tags.BattleDrone).GetComponentInChildren<DroneShooting>();
     }
 }

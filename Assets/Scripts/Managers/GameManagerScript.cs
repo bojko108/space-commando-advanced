@@ -27,7 +27,8 @@ public class GameManagerScript : MonoBehaviour
     private GameObject pauseMenu;
     private GameObject tasks;
     private GameObject player;
-    private GameObject drone;
+    private GameObject battleDrone;
+    private GameObject serviceDrone;
     private ShipEngineScript shipEngine;
 
     // displays important messages to the player
@@ -65,14 +66,15 @@ public class GameManagerScript : MonoBehaviour
         this.RegisterEvents();
 
         this.player = GameObject.FindGameObjectWithTag(Resources.Tags.Player);
-        this.drone = GameObject.FindGameObjectWithTag(Resources.Tags.Drone);
-        this.shipEngine = GameObject.FindGameObjectWithTag(Resources.Tags.Ship).GetComponent<ShipEngineScript>();
+        this.battleDrone = GameObject.FindGameObjectWithTag(Resources.Tags.BattleDrone);
+        this.serviceDrone = GameObject.FindGameObjectWithTag(Resources.Tags.ServiceDrone);
+        //        this.shipEngine = GameObject.FindGameObjectWithTag(Resources.Tags.Ship).GetComponent<ShipEngineScript>();
         this.tasks = GameObject.FindGameObjectWithTag(Resources.Tags.Tasks);
         this.infoText = GameObject.FindGameObjectWithTag(Resources.Tags.InfoText);
         this.pauseMenu = GameObject.FindGameObjectWithTag(Resources.Tags.PauseMenu);
         this.pauseMenu.SetActive(false);
-        this.repairSlider = GameObject.FindGameObjectWithTag(Resources.Tags.RepairSlider).GetComponent<Slider>();
-        this.repairSlider.gameObject.SetActive(false);
+        //this.repairSlider = GameObject.FindGameObjectWithTag(Resources.Tags.RepairSlider).GetComponent<Slider>();
+        //this.repairSlider.gameObject.SetActive(false);
 
         Transform[] baseCommandersSpawnPoints = Array.ConvertAll(GameObject.FindGameObjectsWithTag(Resources.Tags.BaseCommanderSpawnPoint), item => item.transform);
         Transform[] commandersSpawnPoints = Array.ConvertAll(GameObject.FindGameObjectsWithTag(Resources.Tags.CommanderSpawnPoint), item => item.transform);
@@ -142,8 +144,8 @@ public class GameManagerScript : MonoBehaviour
         this.onDarkMatterModuleFound = new UnityAction(this.OnDarkMatterModuleFound);
         EventManager.On(Resources.Events.DarkMatterModuleFound, this.onDarkMatterModuleFound);
 
-        this.onSpaceshipFound = new UnityAction(this.OnSpaceshipFound);
-        EventManager.On(Resources.Events.SpaceshipFound, this.onSpaceshipFound);
+        //this.onSpaceshipFound = new UnityAction(this.OnSpaceshipFound);
+        //EventManager.On(Resources.Events.SpaceshipFound, this.onSpaceshipFound);
 
         this.onPlayerDead = new UnityAction(this.OnPlayerDead);
         EventManager.On(Resources.Events.PlayerDead, this.onPlayerDead);
@@ -298,39 +300,39 @@ public class GameManagerScript : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// executed when the player is near the spaceship
-    /// </summary>
-    private void OnSpaceshipFound()
-    {
-        if (this.ProgressInGame.IsSpaceshipRepaired == false)
-        {
-            if (this.ProgressInGame.IsDarkMatterModuleFound)
-            {
-                this.DisplayInfoText(Resources.Messages.RepairShip);
+    ///// <summary>
+    ///// executed when the player is near the spaceship
+    ///// </summary>
+    //private void OnSpaceshipFound()
+    //{
+    //    if (this.ProgressInGame.IsSpaceshipRepaired == false)
+    //    {
+    //        //if (this.ProgressInGame.IsDarkMatterModuleFound)
+    //        //{
+    //        //    this.DisplayInfoText(Resources.Messages.RepairShip);
 
-                // wait for player to repair the ship
-                StartCoroutine(this.WaitForUserToRepairTheShip());
-            }
-            else
-            {
-                this.DisplayInfoText(Resources.Messages.FindDarkMatterModule);
-            }
-        }
-        else
-        {
-            if (this.ProgressInGame.IsDarkMatterModuleFound)
-            {
-                this.DisplayInfoText(Resources.Messages.BoardShip);
-                // wait for player to board the ship
-                StartCoroutine(this.WaitForUserToGetOnBoard());
-            }
-            else
-            {
-                this.DisplayInfoText(Resources.Messages.FindDarkMatterModule);
-            }
-        }
-    }
+    //        //    // wait for player to repair the ship
+    //        //    StartCoroutine(this.WaitForUserToRepairTheShip());
+    //        //}
+    //        //else
+    //        //{
+    //        //    this.DisplayInfoText(Resources.Messages.FindDarkMatterModule);
+    //        //}
+    //    }
+    //    else
+    //    {
+    //        if (this.ProgressInGame.IsDarkMatterModuleFound)
+    //        {
+    //            this.DisplayInfoText(Resources.Messages.BoardShip);
+    //            // wait for player to board the ship
+    //            StartCoroutine(this.WaitForUserToGetOnBoard());
+    //        }
+    //        else
+    //        {
+    //            this.DisplayInfoText(Resources.Messages.FindDarkMatterModule);
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// executed when the player has the main computer password
@@ -368,6 +370,8 @@ public class GameManagerScript : MonoBehaviour
         Destroy(darkMatterModule, 5f);
 
         #endregion
+
+        EventManager.Emit(Resources.Events.PlayerHasDarkMatterModule);
 
         this.ProgressInGame.IsDarkMatterModuleFound = true;
         this.FinishTask(Resources.Tasks.FindDarkMatterModule);
@@ -410,7 +414,7 @@ public class GameManagerScript : MonoBehaviour
             // add main control room and spaceship to the radar
             //this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.MainComputer));
             //this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.Ship));
-            this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.Drone));
+            this.player.GetComponent<RadarScript>().AddTarget(GameObject.FindGameObjectWithTag(Resources.Tags.BattleDrone));
             this.player.GetComponent<RadarScript>().AddLayer(Resources.Layers.Minimap);
 
             if (savedGame)
@@ -431,17 +435,27 @@ public class GameManagerScript : MonoBehaviour
 
                 #endregion
 
-                #region SET DRONE PROPERTIES
+                #region SET SERVICE DRONE PROPERTIES
 
-                Drone savedDrone = this.ProgressInGame.Drone as Drone;
-                this.drone.transform.position = savedDrone.Position.ToVector3();
-                this.drone.transform.rotation = Quaternion.Euler(savedDrone.Rotation.ToVector3());
+                Drone savedBattleDrone = this.ProgressInGame.Drones[0] as Drone;
+                this.battleDrone.transform.position = savedBattleDrone.Position.ToVector3();
+                this.battleDrone.transform.rotation = Quaternion.Euler(savedBattleDrone.Rotation.ToVector3());
 
-                this.drone.GetComponent<DroneScript>().SetStatus(savedDrone);
+                this.battleDrone.GetComponent<DroneScript>().SetStatus(savedBattleDrone);
+
+                #endregion
+
+                #region SET SERVICE DRONE PROPERTIES
+
+                Drone savedServiceDrone = this.ProgressInGame.Drones[1] as Drone;
+                this.serviceDrone.transform.position = savedServiceDrone.Position.ToVector3();
+                this.serviceDrone.transform.rotation = Quaternion.Euler(savedServiceDrone.Rotation.ToVector3());
+
+                this.serviceDrone.GetComponent<ServiceDroneBT>().SetStatus(savedServiceDrone.PartsDelivered);
+
+                #endregion
             }
             // else use starting properties
-
-            #endregion
 
             #region CHECK COMLETED TASKS
 
@@ -470,6 +484,7 @@ public class GameManagerScript : MonoBehaviour
 
             if (this.ProgressInGame.IsSpaceshipRepaired)
             {
+                EventManager.Emit(Resources.Events.SpaceshipRepaired);
                 this.shipEngine.Repaired();
                 //EventManager.Emit(Resources.Events.GameFinish);
             }
@@ -653,95 +668,95 @@ public class GameManagerScript : MonoBehaviour
         this.HideInfoText();
     }
 
-    /// <summary>
-    /// waits for the player to start repairing the spaceship
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator WaitForUserToRepairTheShip()
-    {
-        // while the player is near the spaceship
-        while (this.playerIsNear)
-        {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                this.DisplayInfoText(Resources.Messages.RepairingShip);
+    ///// <summary>
+    ///// waits for the player to start repairing the spaceship
+    ///// </summary>
+    ///// <returns></returns>
+    //private IEnumerator WaitForUserToRepairTheShip()
+    //{
+    //    // while the player is near the spaceship
+    //    while (this.playerIsNear)
+    //    {
+    //        if (Input.GetKeyDown(KeyCode.F))
+    //        {
+    //            this.DisplayInfoText(Resources.Messages.RepairingShip);
 
-                yield return StartCoroutine(this.RepairingShip());
+    //            yield return StartCoroutine(this.RepairingShip());
 
-                break;
-            }
+    //            break;
+    //        }
 
-            yield return null;
-        }
+    //        yield return null;
+    //    }
 
-        this.HideInfoText();
-    }
+    //    this.HideInfoText();
+    //}
 
-    /// <summary>
-    /// wait to repair spaceship
-    /// </summary>
-    private IEnumerator RepairingShip()
-    {
-        // set to repaired: play engine sound....
-        this.shipEngine.Repaired();
+    ///// <summary>
+    ///// wait to repair spaceship
+    ///// </summary>
+    //private IEnumerator RepairingShip()
+    //{
+    //    // set to repaired: play engine sound....
+    //    this.shipEngine.Repaired();
 
-        this.repairSlider.gameObject.SetActive(true);
+    //    this.repairSlider.gameObject.SetActive(true);
 
-        // while the player is near the spaceship
-        while (this.playerIsNear)
-        {
-            if (this.repairSlider.value < this.repairSlider.maxValue)
-            {
-                this.repairSlider.value += 1;
-                yield return new WaitForSeconds(1f);
-            }
-            else
-            {
-                this.ProgressInGame.IsSpaceshipRepaired = true;
+    //    // while the player is near the spaceship
+    //    while (this.playerIsNear)
+    //    {
+    //        if (this.repairSlider.value < this.repairSlider.maxValue)
+    //        {
+    //            this.repairSlider.value += 1;
+    //            yield return new WaitForSeconds(1f);
+    //        }
+    //        else
+    //        {
+    //            this.ProgressInGame.IsSpaceshipRepaired = true;
 
-                this.repairSlider.gameObject.SetActive(false);
+    //            this.repairSlider.gameObject.SetActive(false);
 
-                this.DisplayInfoText(Resources.Messages.BoardShip);
+    //            this.DisplayInfoText(Resources.Messages.BoardShip);
 
-                yield return StartCoroutine(this.WaitForUserToGetOnBoard());
+    //            yield return StartCoroutine(this.WaitForUserToGetOnBoard());
 
-                this.HideInfoText();
+    //            this.HideInfoText();
 
-                break;
-            }
-        }
+    //            break;
+    //        }
+    //    }
 
-        if (this.ProgressInGame.IsSpaceshipRepaired == false)
-        {
-            this.shipEngine.NotRepaired();
+    //    if (this.ProgressInGame.IsSpaceshipRepaired == false)
+    //    {
+    //        this.shipEngine.NotRepaired();
 
-            this.repairSlider.value = 0;
-            this.repairSlider.gameObject.SetActive(false);
-        }
-    }
+    //        this.repairSlider.value = 0;
+    //        this.repairSlider.gameObject.SetActive(false);
+    //    }
+    //}
 
-    private IEnumerator WaitForUserToGetOnBoard()
-    {
-        // while the player is near the spaceship
-        while (this.playerIsNear)
-        {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                // base commanders are blocking the runway, so kill them!
-                int baseCommandersCount = GameObject.FindGameObjectsWithTag(Resources.Tags.BaseCommander).Length;
+    //private IEnumerator WaitForUserToGetOnBoard()
+    //{
+    //    // while the player is near the spaceship
+    //    while (this.playerIsNear)
+    //    {
+    //        if (Input.GetKeyDown(KeyCode.F))
+    //        {
+    //            // base commanders are blocking the runway, so kill them!
+    //            int baseCommandersCount = GameObject.FindGameObjectsWithTag(Resources.Tags.BaseCommander).Length;
 
-                if (baseCommandersCount < 1)
-                {
-                    EventManager.Emit(Resources.Events.GameFinish);
-                    break;
-                }
-                else
-                {
-                    this.DisplayInfoText(Resources.Messages.KillBaseCommanders);
-                }
-            }
+    //            if (baseCommandersCount < 1)
+    //            {
+    //                EventManager.Emit(Resources.Events.GameFinish);
+    //                break;
+    //            }
+    //            else
+    //            {
+    //                this.DisplayInfoText(Resources.Messages.KillBaseCommanders);
+    //            }
+    //        }
 
-            yield return null;
-        }
-    }
+    //        yield return null;
+    //    }
+    //}
 }
