@@ -16,6 +16,8 @@ public class ServiceDroneBT : MonoBehaviour
     public Transform PlayerTransform;
     [Tooltip("Distance to detect player")]
     public float DetectPlayerDistance = 1f;
+    [Tooltip("Set distance to reach the working place")]
+    public float WorkingPlaceAccuracy = 1f;
 
     [Tooltip("Set drone move speed")]
     public float Speed = 5f;
@@ -48,8 +50,12 @@ public class ServiceDroneBT : MonoBehaviour
     private UnityAction onPlayerHasDarkMatterModule;
     private UnityAction onSpaceshipRepaired;
 
+    private ParticleSystem droneWorkingEffect;
+
     private void Awake()
     {
+        this.droneWorkingEffect = this.GetComponent<ParticleSystem>();
+
         this.onPlayerHasDarkMatterModule = new UnityAction(this.OnPlayerHasDarkMatterModule);
         EventManager.On(Resources.Events.PlayerHasDarkMatterModule, this.onPlayerHasDarkMatterModule);
 
@@ -110,9 +116,9 @@ public class ServiceDroneBT : MonoBehaviour
         bool finishGame = baseCommandersCount < 1;
         if (finishGame)
         {
-            Task.current.Succeed();
+            //Task.current.Succeed();
 
-            StartCoroutine(this.FlyAway());
+            StartCoroutine(this.FlyAway(Task.current));
         }
         else
         {
@@ -134,11 +140,22 @@ public class ServiceDroneBT : MonoBehaviour
 
         bool lookDirectionIsOk = (Vector3.Angle(direction, this.transform.forward) < 5f);
 
-        Task.current.Complete(lookDirectionIsOk);
+        if (lookDirectionIsOk)
+        {
+            Task.current.Succeed();
+        }
+
+        //Task.current.Complete(lookDirectionIsOk);
     }
 
 
     #region Repair Specific
+
+    //[Task]
+    private bool IsNearEngine()
+    {
+        return Vector3.Distance(this.transform.position, this.WorkingLocation.position) < this.WorkingPlaceAccuracy;
+    }
 
     [Task]
     private bool PlayerHaveParts()
@@ -179,11 +196,12 @@ public class ServiceDroneBT : MonoBehaviour
             this.partsDelivered = false;
 
             if (this.waitForParts != null) StopCoroutine(this.waitForParts);
-            this.waitForParts = this.WaitForPartsEnumerator();
+            this.waitForParts = this.WaitForPartsEnumerator(task);
             StartCoroutine(this.waitForParts);
         }
 
-        task.Complete(this.partsDelivered);
+        // task will succeed in the IEnumerator!
+        //task.Complete(this.partsDelivered);
     }
 
     [Task]
@@ -199,9 +217,13 @@ public class ServiceDroneBT : MonoBehaviour
 
         Debug.DrawLine(this.transform.position, this.WorkingLocation.position, Color.green);
 
-        bool distanceIsOk = direction.magnitude < 1f;
+        bool distanceIsOk = direction.magnitude < this.WorkingPlaceAccuracy;
 
-        Task.current.Complete(distanceIsOk);
+        if (distanceIsOk)
+        {
+            Task.current.Succeed();
+        }
+        //Task.current.Complete(distanceIsOk);
     }
 
     [Task]
@@ -216,7 +238,12 @@ public class ServiceDroneBT : MonoBehaviour
 
         Debug.DrawLine(this.transform.position, this.EngineLocation.position, Color.blue);
 
-        Task.current.Complete(lookDirectionIsOk);
+        if (lookDirectionIsOk)
+        {
+            Task.current.Succeed();
+        }
+
+        //Task.current.Complete(lookDirectionIsOk);
     }
 
     [Task]
@@ -229,31 +256,36 @@ public class ServiceDroneBT : MonoBehaviour
             this.shipRepaired = false;
 
             if (this.repairingShip != null) StopCoroutine(this.repairingShip);
-            this.repairingShip = this.RepairingShipEnumerator();
+            this.repairingShip = this.RepairingShipEnumerator(task);
             StartCoroutine(this.repairingShip);
 
             this.DisplayInfoText(Resources.Messages.RepairingShip);
         }
 
-        if (this.shipRepaired)
-        {
-            this.shipEngine.Repaired();
+        // task will succeed in the IEnumerator!
+        //if (this.shipRepaired)
+        //{
+        //    this.shipEngine.Repaired();
 
-            this.DisplayInfoText(Resources.Messages.ShipReady);
+        //    this.DisplayInfoText(Resources.Messages.ShipReady);
 
-            Task.current.Succeed();
-        }
+        //    Task.current.Succeed();
+        //}
     }
 
-    private IEnumerator WaitForPartsEnumerator()
+    private IEnumerator WaitForPartsEnumerator(Task task)
     {
         this.DisplayInfoText(Resources.Messages.DeliverParts);
 
         while (true)
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKey(KeyCode.F))
             {
                 this.partsDelivered = true;
+
+                task.debugInfo = "[Part Delivered!]";
+                task.Succeed();
+
                 break;
             }
 
@@ -263,12 +295,20 @@ public class ServiceDroneBT : MonoBehaviour
         this.HideInfoText();
     }
 
-    private IEnumerator RepairingShipEnumerator()
+    private IEnumerator RepairingShipEnumerator(Task task)
     {
+        this.droneWorkingEffect.Play();
+
         this.repairingSlider.gameObject.SetActive(true);
 
         while (this.shipRepaired == false)
         {
+            if (this.IsNearEngine() == false)
+            {
+                task.Fail();
+                break;
+            }
+
             if (this.repairingSlider.value < this.repairingSlider.maxValue)
             {
                 this.repairingSlider.value += 1;
@@ -277,8 +317,20 @@ public class ServiceDroneBT : MonoBehaviour
             else
             {
                 this.shipRepaired = true;
+
+                this.shipEngine.Repaired();
+
+                this.DisplayInfoText(Resources.Messages.ShipReady);
+
+                task.debugInfo = "[Ship Repaired!]";
+                task.Succeed();
+
+                // it's null!
+                //Task.current.Succeed();
             }
         }
+
+        this.droneWorkingEffect.Stop();
 
         this.repairingSlider.gameObject.SetActive(false);
     }
@@ -286,10 +338,12 @@ public class ServiceDroneBT : MonoBehaviour
     #endregion
 
 
-    private IEnumerator FlyAway()
+    private IEnumerator FlyAway(Task task)
     {
         this.DisplayInfoText("BOARDING SHIP!");
-        
+
+        task.Succeed();
+
         yield return new WaitForSeconds(3f);
 
         EventManager.Emit(Resources.Events.GameFinish);

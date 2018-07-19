@@ -47,7 +47,7 @@ public class ShipEngineScript : MonoBehaviour
 
         this.source.Stop();
         this.source.clip = this.RepairedEngineSound;
-        this.source.loop = false;
+        //this.source.loop = false;
         this.source.Play();
     }
 

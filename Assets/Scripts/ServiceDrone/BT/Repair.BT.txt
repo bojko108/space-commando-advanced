@@ -7,6 +7,8 @@ tree("Repair")
 							LookAtPlayer
 							BoardShip
 				sequence
-					GoToShip
-					FaceTheEngine
-					RepairShip
+					while not IsShipRepaired
+						sequence
+							GoToShip
+							FaceTheEngine
+							RepairShip
