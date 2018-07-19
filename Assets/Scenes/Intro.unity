@@ -1506,12 +1506,37 @@ Prefab:
     - target: {fileID: 199691470730291020, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
         type: 2}
       propertyPath: m_RenderAlignment
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198731711527548186, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
         type: 2}
       propertyPath: TrailModule.textureMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198731711527548186, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
+        type: 2}
+      propertyPath: ClampVelocityModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198731711527548186, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
+        type: 2}
+      propertyPath: EmissionModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198731711527548186, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
+        type: 2}
+      propertyPath: ShapeModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198731711527548186, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
+        type: 2}
+      propertyPath: SizeBySpeedModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 199691470730291020, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b, type: 2}

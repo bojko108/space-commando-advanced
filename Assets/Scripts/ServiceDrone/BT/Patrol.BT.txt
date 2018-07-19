@@ -1,7 +1,7 @@
 tree("Patrol")
 	sequence
-		Idle
 		not DroneHaveParts	// stop if the drone has the parts
+		Idle
 		while IsPlayerNear
 			sequence
 				LookAtPlayer

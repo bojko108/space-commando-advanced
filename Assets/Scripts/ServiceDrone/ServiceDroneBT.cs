@@ -250,6 +250,8 @@ public class ServiceDroneBT : MonoBehaviour
         {
             this.shipEngine.Repaired();
 
+            this.HideInfoText();
+
             Task.current.Succeed();
         }
     }
@@ -269,7 +271,7 @@ public class ServiceDroneBT : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        this.HideInfoText();
+        //this.HideInfoText();
     }
 
     private IEnumerator WaitForPartsEnumerator()
