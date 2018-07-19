@@ -30,6 +30,9 @@ public class ServiceDroneBT : MonoBehaviour
     [Tooltip("Displays important messages to the player")]
     public GameObject InfoText;
 
+    [Tooltip("The game object should have a line renderer and a particle system representing the sparks")]
+    public GameObject DroneWorkingEffect;
+
     // are the parts found by the player?
     private bool partsFound = false;
     // is the ship repaired?
@@ -50,12 +53,8 @@ public class ServiceDroneBT : MonoBehaviour
     private UnityAction onPlayerHasDarkMatterModule;
     private UnityAction onSpaceshipRepaired;
 
-    private ParticleSystem droneWorkingEffect;
-
     private void Awake()
     {
-        this.droneWorkingEffect = this.GetComponent<ParticleSystem>();
-
         this.onPlayerHasDarkMatterModule = new UnityAction(this.OnPlayerHasDarkMatterModule);
         EventManager.On(Resources.Events.PlayerHasDarkMatterModule, this.onPlayerHasDarkMatterModule);
 
@@ -297,7 +296,11 @@ public class ServiceDroneBT : MonoBehaviour
 
     private IEnumerator RepairingShipEnumerator(Task task)
     {
-        this.droneWorkingEffect.Play();
+        if (this.DroneWorkingEffect != null)
+        {
+            this.DroneWorkingEffect.SetActive(true);
+            this.DroneWorkingEffect.GetComponent<ParticleSystem>().Play();
+        }
 
         this.repairingSlider.gameObject.SetActive(true);
 
@@ -330,7 +333,11 @@ public class ServiceDroneBT : MonoBehaviour
             }
         }
 
-        this.droneWorkingEffect.Stop();
+        if (this.DroneWorkingEffect != null)
+        {
+            this.DroneWorkingEffect.SetActive(false);
+            this.DroneWorkingEffect.GetComponent<ParticleSystem>().Stop();
+        }
 
         this.repairingSlider.gameObject.SetActive(false);
     }
