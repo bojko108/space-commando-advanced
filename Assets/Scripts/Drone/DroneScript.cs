@@ -385,7 +385,8 @@ public class DroneScript : MonoBehaviour
                 this.DroneBatterySlider.value = this.batteryLevel;
             }
 
-            yield return new WaitForEndOfFrame();
+            //yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
 
         // the drone has no more battery to continue in attack mode
@@ -403,7 +404,8 @@ public class DroneScript : MonoBehaviour
                 this.DroneBatterySlider.value = this.batteryLevel;
             }
 
-            yield return new WaitForEndOfFrame();
+            //yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
 
         // drone's battery is fully charged now
@@ -429,7 +431,8 @@ public class DroneScript : MonoBehaviour
                 this.detectionCollider.radius += 10f;
             }
 
-            yield return new WaitForEndOfFrame();
+            //yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
 
@@ -443,7 +446,8 @@ public class DroneScript : MonoBehaviour
                 this.detectionCollider.radius -= 10f;
             }
 
-            yield return new WaitForEndOfFrame();
+            //yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
         }
     }
 

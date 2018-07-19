@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Panda;
 using UnityEngine.Events;
+using System;
 
 public class ServiceDroneBT : MonoBehaviour
 {
@@ -36,14 +37,9 @@ public class ServiceDroneBT : MonoBehaviour
     [HideInInspector]   // public because can be saved in GameSaveLoad.SaveDrone()
     public bool partsDelivered = false;
 
-    // TRUE to start boarding ship
-    [HideInInspector]   // public because can be saved in GameSaveLoad.SaveDrone()
-    public bool boardShip = false;
-
     private IEnumerator waitForParts;
-    private IEnumerator waitForBoardCommand;
     private IEnumerator repairingShip;
-    
+
     // displays repairing progress
     private Slider repairingSlider;
 
@@ -61,7 +57,7 @@ public class ServiceDroneBT : MonoBehaviour
         EventManager.On(Resources.Events.SpaceshipRepaired, this.onSpaceshipRepaired);
 
         this.shipEngine = GameObject.FindGameObjectWithTag(Resources.Tags.Ship).GetComponent<ShipEngineScript>();
-        
+
         this.repairingSlider = GameObject.FindGameObjectWithTag(Resources.Tags.RepairSlider).GetComponent<Slider>();
         this.repairingSlider.gameObject.SetActive(false);  // hide from screen
         this.repairingSlider.minValue = 0f;
@@ -86,12 +82,23 @@ public class ServiceDroneBT : MonoBehaviour
         this.shipRepaired = true;
     }
 
+    private void DisplayInfoText(string text)
+    {
+        this.InfoText.transform.localScale = Vector3.one;
+        this.InfoText.GetComponent<Text>().text = text;
+    }
+
+    private void HideInfoText()
+    {
+        this.InfoText.transform.localScale = Vector3.zero;
+    }
+
+
     [Task]
     private void Idle()
     {
         this.HideInfoText();
 
-        Task.current.debugInfo = string.Format("[Info = {0}]", "asdsadasd");
         Task.current.Succeed();
     }
 
@@ -103,32 +110,15 @@ public class ServiceDroneBT : MonoBehaviour
         bool finishGame = baseCommandersCount < 1;
         if (finishGame)
         {
-            EventManager.Emit(Resources.Events.GameFinish);
+            Task.current.Succeed();
+
+            StartCoroutine(this.FlyAway());
         }
         else
         {
             this.DisplayInfoText(Resources.Messages.KillBaseCommanders);
         }
-
-        Task.current.Complete(finishGame);
     }
-
-    [Task]
-    private void WaitForBoardCommand()
-    {
-        Task task = Task.current;
-
-        if (task.isStarting)
-        {
-            if (this.waitForBoardCommand != null) StopCoroutine(this.waitForBoardCommand);
-            this.waitForBoardCommand = this.WaitForBoardCommandEnumerator();
-            StartCoroutine(this.waitForBoardCommand);
-        }
-
-        Task.current.Complete(this.boardShip);
-    }
-
-    #region Patrol Specific
 
     [Task]
     private bool IsPlayerNear()
@@ -139,8 +129,6 @@ public class ServiceDroneBT : MonoBehaviour
     [Task]
     private void LookAtPlayer()
     {
-        //Task task = Task.current;
-
         Vector3 direction = this.PlayerTransform.position - this.transform.position;
         this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), this.RotationSpeed * Time.deltaTime);
 
@@ -149,7 +137,6 @@ public class ServiceDroneBT : MonoBehaviour
         Task.current.Complete(lookDirectionIsOk);
     }
 
-    #endregion
 
     #region Repair Specific
 
@@ -196,7 +183,7 @@ public class ServiceDroneBT : MonoBehaviour
             StartCoroutine(this.waitForParts);
         }
 
-        Task.current.Complete(this.partsDelivered);
+        task.Complete(this.partsDelivered);
     }
 
     [Task]
@@ -210,7 +197,7 @@ public class ServiceDroneBT : MonoBehaviour
 
         this.transform.Translate(0, 0, this.Speed * Time.deltaTime);
 
-        Debug.DrawLine(this.transform.position, this.WorkingLocation.position);
+        Debug.DrawLine(this.transform.position, this.WorkingLocation.position, Color.green);
 
         bool distanceIsOk = direction.magnitude < 1f;
 
@@ -226,6 +213,8 @@ public class ServiceDroneBT : MonoBehaviour
         this.transform.rotation = rotation;
 
         bool lookDirectionIsOk = (Vector3.Angle(direction, this.transform.forward) < 5f);
+
+        Debug.DrawLine(this.transform.position, this.EngineLocation.position, Color.blue);
 
         Task.current.Complete(lookDirectionIsOk);
     }
@@ -250,33 +239,15 @@ public class ServiceDroneBT : MonoBehaviour
         {
             this.shipEngine.Repaired();
 
-            this.HideInfoText();
+            this.DisplayInfoText(Resources.Messages.ShipReady);
 
             Task.current.Succeed();
         }
     }
 
-    private IEnumerator WaitForBoardCommandEnumerator()
-    {
-        this.DisplayInfoText(Resources.Messages.BoardShip);
-
-        while (true)
-        {
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                this.boardShip = true;
-                break;
-            }
-
-            yield return new WaitForEndOfFrame();
-        }
-
-        //this.HideInfoText();
-    }
-
     private IEnumerator WaitForPartsEnumerator()
     {
-        this.DisplayInfoText("Press F to deliver the Dark Matter Module");
+        this.DisplayInfoText(Resources.Messages.DeliverParts);
 
         while (true)
         {
@@ -315,15 +286,12 @@ public class ServiceDroneBT : MonoBehaviour
     #endregion
 
 
-
-    private void DisplayInfoText(string text)
+    private IEnumerator FlyAway()
     {
-        this.InfoText.transform.localScale = Vector3.one;
-        this.InfoText.GetComponent<Text>().text = text;
-    }
+        this.DisplayInfoText("BOARDING SHIP!");
+        
+        yield return new WaitForSeconds(3f);
 
-    private void HideInfoText()
-    {
-        this.InfoText.transform.localScale = Vector3.zero;
+        EventManager.Emit(Resources.Events.GameFinish);
     }
 }

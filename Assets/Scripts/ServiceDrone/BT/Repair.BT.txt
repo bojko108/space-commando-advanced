@@ -2,10 +2,10 @@ tree("Repair")
 		while DroneHaveParts
 			fallback
 				while IsShipRepaired
-					sequence
-						LookAtPlayer
-						WaitForBoardCommand
-						BoardShip
+					while IsPlayerNear
+						sequence
+							LookAtPlayer
+							BoardShip
 				sequence
 					GoToShip
 					FaceTheEngine
