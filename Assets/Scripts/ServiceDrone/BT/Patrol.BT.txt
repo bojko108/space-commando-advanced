@@ -1,10 +1,4 @@
 tree("Patrol")
-	sequence
-		not DroneHaveParts	// stop if the drone has the parts
-		Idle
-		while IsPlayerNear
-			sequence
-				LookAtPlayer
-				CheckParts
-				while PlayerHaveParts
-					WaitForParts
+	while not IsPlayerNear
+		while not DroneHaveParts
+			GoToDestination

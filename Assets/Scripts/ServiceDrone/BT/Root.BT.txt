@@ -1,4 +1,5 @@
 tree("Root")
 	parallel
 		repeat mute tree("Patrol")
+		repeat mute tree("Alert")
 		repeat mute tree("Repair")

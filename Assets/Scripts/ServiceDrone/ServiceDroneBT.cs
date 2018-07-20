@@ -16,8 +16,10 @@ public class ServiceDroneBT : MonoBehaviour
     public Transform PlayerTransform;
     [Tooltip("Distance to detect player")]
     public float DetectPlayerDistance = 1f;
-    [Tooltip("Set distance to reach the working place")]
-    public float WorkingPlaceAccuracy = 1f;
+    [Tooltip("Set distance to reach target destination")]
+    public float PositionAccuracy = 1f;
+    [Tooltip("Set Service Drone waypoints array")]
+    public Transform[] Waypoints;
 
     [Tooltip("Set drone move speed")]
     public float Speed = 5f;
@@ -33,8 +35,10 @@ public class ServiceDroneBT : MonoBehaviour
     [Tooltip("The game object should have a line renderer and a particle system representing the sparks")]
     public GameObject DroneWorkingEffect;
 
+    private int currentWaypointIndex = -1;
+
     // are the parts found by the player?
-    private bool partsFound = false;
+    private bool partsFound = false; // ------------------------------------------------------- set to false
     // is the ship repaired?
     private bool shipRepaired = false;
 
@@ -147,13 +151,55 @@ public class ServiceDroneBT : MonoBehaviour
         //Task.current.Complete(lookDirectionIsOk);
     }
 
+    #region Patrol Specific
+
+    [Task]
+    private void GoToDestination()
+    {
+        Task task = Task.current;
+
+        if (task.isStarting)
+        {
+            // must be between 0 and (waypoints.length - 1)
+            this.currentWaypointIndex = (this.currentWaypointIndex >= this.Waypoints.Length ? 0 : this.currentWaypointIndex);
+            this.currentWaypointIndex = (this.currentWaypointIndex < 0 ? 0 : this.currentWaypointIndex);
+        }
+
+        #region set destination
+
+        // calculate rotation and move vector to working location
+        Vector3 direction = this.Waypoints[this.currentWaypointIndex].position - this.transform.position;
+        Quaternion rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), this.RotationSpeed * Time.deltaTime);
+
+        this.transform.rotation = rotation;
+
+        this.transform.Translate(0, 0, this.Speed * Time.deltaTime);
+
+        Debug.DrawLine(this.transform.position, this.Waypoints[this.currentWaypointIndex].position, Color.yellow);
+
+        #endregion
+
+        bool distanceIsOk = direction.magnitude < this.PositionAccuracy;
+
+        if (distanceIsOk)
+        {
+            // destination reached - move to next waypoint
+            this.currentWaypointIndex++;
+
+            task.Succeed();
+        }
+
+        Task.current.debugInfo = string.Format("[Waypoint = {0}]", this.currentWaypointIndex);
+    }
+
+    #endregion
 
     #region Repair Specific
 
     //[Task]
     private bool IsNearEngine()
     {
-        return Vector3.Distance(this.transform.position, this.WorkingLocation.position) < this.WorkingPlaceAccuracy;
+        return Vector3.Distance(this.transform.position, this.WorkingLocation.position) < this.PositionAccuracy;
     }
 
     [Task]
@@ -216,7 +262,7 @@ public class ServiceDroneBT : MonoBehaviour
 
         Debug.DrawLine(this.transform.position, this.WorkingLocation.position, Color.green);
 
-        bool distanceIsOk = direction.magnitude < this.WorkingPlaceAccuracy;
+        bool distanceIsOk = direction.magnitude < this.PositionAccuracy;
 
         if (distanceIsOk)
         {

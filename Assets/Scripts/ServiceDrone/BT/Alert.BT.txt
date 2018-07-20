@@ -1,0 +1,10 @@
+tree("Alert")
+	sequence
+		not DroneHaveParts
+		Idle
+		while IsPlayerNear
+			sequence
+				LookAtPlayer
+				CheckParts
+				while PlayerHaveParts
+					WaitForParts
