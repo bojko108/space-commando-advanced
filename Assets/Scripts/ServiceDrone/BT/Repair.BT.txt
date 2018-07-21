@@ -6,6 +6,7 @@ tree("Repair")
 						sequence
 							LookAtPlayer
 							BoardShip
+							// END GAME
 				sequence
 					while not IsShipRepaired
 						sequence

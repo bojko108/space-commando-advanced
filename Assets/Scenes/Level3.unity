@@ -3032,6 +3032,14 @@ Prefab:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 327720043}
+    - target: {fileID: 4633551285193948, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 361
+      objectReference: {fileID: 0}
+    - target: {fileID: 4633551285193948, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 37.8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
   m_IsPrefabParent: 0
@@ -7506,6 +7514,11 @@ Prefab:
       propertyPath: DirectionsColor.b
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114834817909138718, guid: 0dde58b5aa814c3478585a88ea930652,
+        type: 2}
+      propertyPath: MaxBatteryLevel
+      value: 1000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0dde58b5aa814c3478585a88ea930652, type: 2}
   m_IsPrefabParent: 0
@@ -8721,7 +8734,7 @@ Prefab:
     - target: {fileID: 114699667440254468, guid: b3d11a18f233ecd42923e9b7b1e27a68,
         type: 2}
       propertyPath: partsFound
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b3d11a18f233ecd42923e9b7b1e27a68, type: 2}
