@@ -37,8 +37,8 @@ public class ServiceDroneBT : MonoBehaviour
 
     private int currentWaypointIndex = -1;
 
-    // are the parts found by the player?
-    private bool partsFound = false; // ------------------------------------------------------- set to false
+    [Tooltip("Are the parts found by the player? For testing...")]
+    public bool partsFound = false; // ------------------------------------------------------- set to false
     // is the ship repaired?
     private bool shipRepaired = false;
 
