@@ -20,8 +20,8 @@ public class ScannerScript : MonoBehaviour
 {
     [Tooltip("Sound played when scan is initiated")]
     public AudioClip ScannerSound;
-    [Tooltip("Material used for drawing direction lines")]
-    public Material DirectionsMaterial;
+    [Tooltip("Color used for drawing direction lines")]
+    public Color DirectionsColor = Color.white;
     [Tooltip("Scanner increase size for every frame")]
     public Vector3 IncreaseSize;
     [Tooltip("Max scanner size")]
@@ -119,12 +119,14 @@ public class ScannerScript : MonoBehaviour
 
         LineRenderer line = lineGameObject.AddComponent<LineRenderer>();
         line.positionCount = corners.Length;
-        line.startColor = Color.blue;
-        line.endColor = Color.blue;
+        //line.startColor = this.DirectionsColor;
+        //line.endColor = this.DirectionsColor;
         line.startWidth = 1f;
         line.endWidth = 1f;
-        line.material = this.DirectionsMaterial;
-        
+        Material mat = new Material(Shader.Find("LightweightPipeline/Particles/Standard Unlit"));
+        line.material = mat;
+        line.material.color = this.DirectionsColor;
+
         //TODO: increase line height above ground
         line.SetPositions(corners);
 

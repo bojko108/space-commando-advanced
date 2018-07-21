@@ -701,7 +701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScannerSound: {fileID: 8300000, guid: d79655ea34e0c9945b7808176ea4c39d, type: 3}
-  DirectionsMaterial: {fileID: 2100000, guid: b7ea44a54a548cb459f36550c92cc22c, type: 2}
+  DirectionsColor: {r: 0, g: 0.95253086, b: 1, a: 1}
   IncreaseSize: {x: 10, y: 10, z: 10}
   TargetSize: {x: 1500, y: 1500, z: 1500}
   Targets:
