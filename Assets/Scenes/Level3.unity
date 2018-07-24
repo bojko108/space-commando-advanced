@@ -657,6 +657,34 @@ RectTransform:
   m_AnchoredPosition: {x: 20, y: -20}
   m_SizeDelta: {x: 350, y: 100}
   m_Pivot: {x: 0, y: 1}
+--- !u!1 &231763346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 231763347}
+  m_Layer: 0
+  m_Name: DarkMatterModulePosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &231763347
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 231763346}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 898019341}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &235222438
 GameObject:
   m_ObjectHideFlags: 0
@@ -3040,6 +3068,18 @@ Prefab:
       propertyPath: m_LocalPosition.x
       value: 37.8
       objectReference: {fileID: 0}
+    - target: {fileID: 1921255557394218, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921255557394218, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
+      propertyPath: m_Name
+      value: DarkModule
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921255557394218, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
   m_IsPrefabParent: 0
@@ -3189,6 +3229,11 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
+--- !u!4 &898019341 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4310875632503528, guid: b3d11a18f233ecd42923e9b7b1e27a68,
+    type: 2}
+  m_PrefabInternal: {fileID: 2033414252}
 --- !u!1001 &899295365
 Prefab:
   m_ObjectHideFlags: 0
@@ -7479,11 +7524,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 114834817909138718, guid: 0dde58b5aa814c3478585a88ea930652,
-        type: 2}
-      propertyPath: DroneBatterySlider
-      value: 
-      objectReference: {fileID: 2037939153}
     - target: {fileID: 114377977669796176, guid: 0dde58b5aa814c3478585a88ea930652,
         type: 2}
       propertyPath: Targets.Array.data[0].Target
@@ -7499,26 +7539,11 @@ Prefab:
       propertyPath: Targets.Array.data[2].Target
       value: 
       objectReference: {fileID: 1293090459}
-    - target: {fileID: 114377977669796176, guid: 0dde58b5aa814c3478585a88ea930652,
-        type: 2}
-      propertyPath: DirectionsColor.r
-      value: 0.9876151
-      objectReference: {fileID: 0}
-    - target: {fileID: 114377977669796176, guid: 0dde58b5aa814c3478585a88ea930652,
-        type: 2}
-      propertyPath: DirectionsColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114377977669796176, guid: 0dde58b5aa814c3478585a88ea930652,
-        type: 2}
-      propertyPath: DirectionsColor.b
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 114834817909138718, guid: 0dde58b5aa814c3478585a88ea930652,
         type: 2}
-      propertyPath: MaxBatteryLevel
-      value: 1000
-      objectReference: {fileID: 0}
+      propertyPath: DroneBatterySlider
+      value: 
+      objectReference: {fileID: 2037939153}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0dde58b5aa814c3478585a88ea930652, type: 2}
   m_IsPrefabParent: 0
@@ -8736,6 +8761,15 @@ Prefab:
       propertyPath: partsFound
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1259342466764182, guid: b3d11a18f233ecd42923e9b7b1e27a68, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114699667440254468, guid: b3d11a18f233ecd42923e9b7b1e27a68,
+        type: 2}
+      propertyPath: DarkMatterModulePosition
+      value: 
+      objectReference: {fileID: 231763347}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b3d11a18f233ecd42923e9b7b1e27a68, type: 2}
   m_IsPrefabParent: 0

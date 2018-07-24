@@ -124,7 +124,7 @@ namespace Assets.Scripts.SaveLoad
             Drone drone = new Drone();
             drone.Tag = droneGO.tag;
 
-            // service drone does not have animator... for now
+            // service drone does not have animator...
             if (droneGO.GetComponent<Animator>() != null)
             {
                 drone.InAttack = droneGO.GetComponent<Animator>().GetBool("InAttack");

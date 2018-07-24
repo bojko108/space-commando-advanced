@@ -46,6 +46,8 @@ public class ServiceDroneBT : MonoBehaviour
     [HideInInspector]   // public because can be saved in GameSaveLoad.SaveDrone()
     public bool partsDelivered = false;
 
+    private GameObject darkMatterModule;
+
     private IEnumerator waitForParts;
     private IEnumerator repairingShip;
 
@@ -59,6 +61,8 @@ public class ServiceDroneBT : MonoBehaviour
 
     private void Awake()
     {
+        this.darkMatterModule = GameObject.FindGameObjectWithTag(Resources.Tags.DarkMatterModule);
+
         this.onPlayerHasDarkMatterModule = new UnityAction(this.OnPlayerHasDarkMatterModule);
         EventManager.On(Resources.Events.PlayerHasDarkMatterModule, this.onPlayerHasDarkMatterModule);
 
@@ -107,6 +111,8 @@ public class ServiceDroneBT : MonoBehaviour
     private void Idle()
     {
         this.HideInfoText();
+
+        // reset drone Y coordinate?
 
         Task.current.Succeed();
     }
@@ -328,6 +334,8 @@ public class ServiceDroneBT : MonoBehaviour
             {
                 this.partsDelivered = true;
 
+                //StartCoroutine(this.AnimateDarkMatterModuleDelivery());
+
                 task.debugInfo = "[Part Delivered!]";
                 task.Succeed();
 
@@ -339,6 +347,30 @@ public class ServiceDroneBT : MonoBehaviour
 
         this.HideInfoText();
     }
+
+    //private IEnumerator AnimateDarkMatterModuleDelivery()
+    //{
+    //    this.darkMatterModule.SetActive(true);
+    //    this.darkMatterModule.GetComponent<MeshCollider>().enabled = false;
+
+    //    Transform parent = this.gameObject.FindChildrenByName("DarkMatterModulePosition")[0].transform;
+    //    this.darkMatterModule.transform.parent = parent;
+    //    this.darkMatterModule.transform.localPosition = Vector3.zero;
+    //    this.darkMatterModule.transform.rotation = Quaternion.identity;
+        
+    //    Material customMaterial = this.darkMatterModule.GetComponent<Renderer>().material;
+
+    //    float dissappearValue = 1f;
+
+    //    while (true)
+    //    {
+    //        customMaterial.SetFloat("Vector1_1A6F4C46", dissappearValue);
+    //        yield return new WaitForFixedUpdate();
+    //        dissappearValue -= Time.fixedDeltaTime / 5;
+
+    //        if (dissappearValue < 0f) break;
+    //    }
+    //}
 
     private IEnumerator RepairingShipEnumerator(Task task)
     {

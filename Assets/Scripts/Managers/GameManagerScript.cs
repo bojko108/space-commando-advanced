@@ -363,11 +363,7 @@ public class GameManagerScript : MonoBehaviour
     {
         #region change dark matter module material/shader
 
-        GameObject darkMatterModule = GameObject.FindGameObjectWithTag(Resources.Tags.DarkMatterModule);
-        //Shader disappearingShader = Shader.Find("PBR Master");
-        //darkMatterModule.GetComponent<Renderer>().material.shader = disappearingShader;
-        darkMatterModule.GetComponent<Renderer>().material = this.DarkMatterMaterial;
-        Destroy(darkMatterModule, 5f);
+        StartCoroutine(this.AnimateDarkMatterModuleDissappearence());
 
         #endregion
 
@@ -397,6 +393,25 @@ public class GameManagerScript : MonoBehaviour
 
         // set soldiers in attack mode
         //StartCoroutine(this.SetEnemiesInAttackMode(Resources.Tags.Soldier, 0f));
+    }
+
+    private IEnumerator AnimateDarkMatterModuleDissappearence()
+    {
+        GameObject darkMatterModule = GameObject.FindGameObjectWithTag(Resources.Tags.DarkMatterModule);
+        darkMatterModule.GetComponent<Renderer>().material = this.DarkMatterMaterial;
+
+        float dissappearValue = 0f;
+
+        while (true)
+        {
+            this.DarkMatterMaterial.SetFloat("Vector1_1A6F4C46", dissappearValue);
+            yield return new WaitForFixedUpdate();
+            dissappearValue += Time.fixedDeltaTime / 3;
+
+            if (dissappearValue > 1f) break;
+        }
+
+        darkMatterModule.SetActive(false);
     }
 
     /// <summary>
@@ -435,7 +450,7 @@ public class GameManagerScript : MonoBehaviour
 
                 #endregion
 
-                #region SET SERVICE DRONE PROPERTIES
+                #region SET BATTLE DRONE PROPERTIES
 
                 Drone savedBattleDrone = this.ProgressInGame.Drones[0] as Drone;
                 this.battleDrone.transform.position = savedBattleDrone.Position.ToVector3();
