@@ -965,7 +965,7 @@ GameObject:
   m_TagString: DarkMatterModule
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1930193710826798
 GameObject:
@@ -1686,7 +1686,7 @@ Transform:
   m_GameObject: {fileID: 1453709799707520}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.565, z: 0}
-  m_LocalScale: {x: 3.5, y: 3.5, z: 0.50000024}
+  m_LocalScale: {x: 5, y: 5, z: 0.50000024}
   m_Children: []
   m_Father: {fileID: 4177961484904740}
   m_RootOrder: 0
@@ -1760,7 +1760,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1168263421385558}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 37.844, y: -78.516014, z: 363.15}
+  m_LocalPosition: {x: 37.8, y: -78.516014, z: 361}
   m_LocalScale: {x: 1, y: 3.2140799, z: 577.5124}
   m_Children: []
   m_Father: {fileID: 4408657185153002}
