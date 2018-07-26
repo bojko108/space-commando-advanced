@@ -27,6 +27,7 @@ public class ServiceDroneBT : MonoBehaviour
     public float RotationSpeed = 10f;
 
     [Tooltip("Set ship repair time in seconds")]
+    [Range(5f, 60f)]
     public float RepairTime = 5f;
 
     [Tooltip("Displays important messages to the player")]
@@ -72,6 +73,10 @@ public class ServiceDroneBT : MonoBehaviour
         this.shipEngine = GameObject.FindGameObjectWithTag(Resources.Tags.Ship).GetComponent<ShipEngineScript>();
 
         this.repairingSlider = GameObject.FindGameObjectWithTag(Resources.Tags.RepairSlider).GetComponent<Slider>();
+    }
+
+    private void Start()
+    {
         this.repairingSlider.gameObject.SetActive(false);  // hide from screen
         this.repairingSlider.minValue = 0f;
         this.repairingSlider.maxValue = this.RepairTime;
@@ -173,7 +178,6 @@ public class ServiceDroneBT : MonoBehaviour
 
         #region set destination
 
-        // calculate rotation and move vector to working location
         Vector3 direction = this.Waypoints[this.currentWaypointIndex].position - this.transform.position;
         Quaternion rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), this.RotationSpeed * Time.deltaTime);
 
@@ -258,7 +262,6 @@ public class ServiceDroneBT : MonoBehaviour
     [Task]
     private void GoToShip()
     {
-        // calculate rotation and move vector to working location
         Vector3 direction = this.WorkingLocation.position - this.transform.position;
         Quaternion rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(direction), this.RotationSpeed * Time.deltaTime);
 
@@ -357,18 +360,18 @@ public class ServiceDroneBT : MonoBehaviour
     //    this.darkMatterModule.transform.parent = parent;
     //    this.darkMatterModule.transform.localPosition = Vector3.zero;
     //    this.darkMatterModule.transform.rotation = Quaternion.identity;
-        
+
     //    Material customMaterial = this.darkMatterModule.GetComponent<Renderer>().material;
 
-    //    float dissappearValue = 1f;
+    //    float disappearValue = 1f;
 
     //    while (true)
     //    {
-    //        customMaterial.SetFloat("Vector1_1A6F4C46", dissappearValue);
+    //        customMaterial.SetFloat("Vector1_1A6F4C46", disappearValue);
     //        yield return new WaitForFixedUpdate();
-    //        dissappearValue -= Time.fixedDeltaTime / 5;
+    //        disappearValue -= Time.fixedDeltaTime / 5;
 
-    //        if (dissappearValue < 0f) break;
+    //        if (dissappearValue < -0.1f) break;
     //    }
     //}
 

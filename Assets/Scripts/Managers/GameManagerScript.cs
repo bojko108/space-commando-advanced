@@ -363,7 +363,7 @@ public class GameManagerScript : MonoBehaviour
     {
         #region change dark matter module material/shader
 
-        StartCoroutine(this.AnimateDarkMatterModuleDissappearence());
+        StartCoroutine(this.AnimateDarkMatterModuleDisappearence());
 
         #endregion
 
@@ -395,20 +395,20 @@ public class GameManagerScript : MonoBehaviour
         //StartCoroutine(this.SetEnemiesInAttackMode(Resources.Tags.Soldier, 0f));
     }
 
-    private IEnumerator AnimateDarkMatterModuleDissappearence()
+    private IEnumerator AnimateDarkMatterModuleDisappearence()
     {
         GameObject darkMatterModule = GameObject.FindGameObjectWithTag(Resources.Tags.DarkMatterModule);
         darkMatterModule.GetComponent<Renderer>().material = this.DarkMatterMaterial;
 
-        float dissappearValue = 0f;
+        float disappearValue = 0f;
 
         while (true)
         {
-            this.DarkMatterMaterial.SetFloat("Vector1_1A6F4C46", dissappearValue);
+            this.DarkMatterMaterial.SetFloat("Vector1_1A6F4C46", disappearValue);
             yield return new WaitForFixedUpdate();
-            dissappearValue += Time.fixedDeltaTime / 3;
+            disappearValue += Time.fixedDeltaTime / 3;
 
-            if (dissappearValue > 1f) break;
+            if (disappearValue > 1f) break;
         }
 
         darkMatterModule.SetActive(false);

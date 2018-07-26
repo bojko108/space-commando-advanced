@@ -63,7 +63,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_1CEF0709: 0
+    - Vector1_1CEF0709: -0.5
     - Vector1_2092FAFE: 5
     - Vector1_4C18FAB7: 0
     - Vector1_CD2CC8B0: 1
