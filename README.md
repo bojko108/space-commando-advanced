@@ -70,15 +70,15 @@ Options for:
 
 After a fierce space battle the player manages to escape but his spaceship is badly damaged. His only chance is to look for spare parts for the ship in an old abandoned base, located on a nearby planet. The problem is the base has been taken over by hostile aliens.
 
+The Player has two drones that help him during the game - one battle drone and one service drone. The Battle Drone can patrol and attack enemies as well as scan the base and give the player directions to important locations. The Service Drone can repair the spaceship using the parts, found by the player.
+
 The player lands his spaceship near the old base and is now searching for supplies and spare parts to repair it. Player's ship has a broken Dark Matter Module, which can be found in the Storage Room. The game starts at this point.
 
-The player has two drones which helps him during the game - one battle drone and one service drone. The Battle drone can patrol and attack enemies as well as scan the base and give directions to the important locations to the player. The Service drone can repair the spaceship wit hthe parts, found by the player.
+When the game starts, the player is running out of oxygen and has to find the Main Control Room to turn Base Life Support Systems on. The access to the Main Computer is blocked by a password. The player has to decipher the password in order to login, turn Life Support Systems on and find the Storage Room location. When the player is near the Main Computer, the game waits for him to enter the password. After the player has the password, his oxygen level is set to full and no longer decreases. The minimap is also updated: `Buildings` layer is added to the map. However, going to the Main Computer Room is optional as the player has enough oxygen for finding the spare parts and repairing the spaceship if he moves fast enough.
 
-When the game starts, the player is running out of oxygen and has to find the Main Control Room to turn Base Life Support Systems on. The access to the Main Computer is blocked by a password. The player has to decipher the password in order to login, turn Life Support Systems on and find the Storage Room location. When the player is near the Main Computer, the game waits for him to enter the password. After the player has the password, his oxygen level is set to full and no longer decreases. The minimap is also updated: `Buildings` layer is added to the map.
+After the player locates and takes the Dark Matter Module, he can return and repair the Spaceship. At this point enemies detect distance will be increased and `Base Commanders` will be spawned.
 
-After the player locates and takes the Dark Matter Module he can return and repair the Spaceship. At this point enemies detect distance will be increased and `Base Commanders` will be spawned.
-
-When the player has the Dark Matter Module the Service drone can start repairing it. After the ship is repaired, the player can get on board and leave the planet for good.
+After the Player delivers the Dark Matter Module to the Service Drone, it can start repairing the Ship. The Service Drone needs time to finish the task so the Player has to survive until the drone is ready with the repair job!
 
 # Game setup
 
@@ -97,7 +97,7 @@ When the player has the Dark Matter Module the Service drone can start repairing
 
 ## Environment setup
 
-* Real buildings imported with a script - source spatial data is stored in `Assets/Maps/Level3.txt` file
+* Real buildings imported with a script - source spatial data is stored in `Assets/Maps/buildings.txt` file
 * Import map data using the script for importing from `GeoJSON` asset:
   * The unique ID is stored in `osm_id` property
   * The extrusion parameter is stored in `height` property
@@ -106,7 +106,7 @@ When the player has the Dark Matter Module the Service drone can start repairing
   * Add Mesh Collider using the script for generating mesh colliders
   * Add Material using a script
   * All buildings and base border are set to `static`
-  * Create ground object and build the NavMesh
+  * Set costs for different ground object and build the NavMesh
 
 ## Player
 
@@ -135,24 +135,30 @@ Imported from Unity Assets - FPS Player Character.
 
 ### Battle Drone
 
+Uses FSM to make decisions. The drone navigates through the map using a NavMesh with all area costs set to `1`. The Battle drone can execute two distinct tasks:
+- `Attack` - when in this mode, the drone will attack any detected enemy. The battery drains quickly so the drone cannot stay in this mode for a long time.
+- `Scan` - in this mode the drone will stop moving and will initiate scan procedure. It will find the locations of important targets such as `Main Computer Room`, `Storage Room` and `Spaceship` and will calculate the fastest route from the current player's position to each of these targets. Doing these calculations the drone takes into account the different NavMesh zones.
+
 ### Service Drone
 
-## AI
-- navmesh agents
-- navmesh zones
-- fsm or bt
+Uses BT to make decisions. The Service Drone patrols arround the spaceship using waypoints and waits for the player to deliver the Dark Matter Module, necessary for the repaires. As soon as the player delivers the parts, the Service Drone will go to the ship's engine and will start repairing it. As the repairing job takes time, the Player has to make sure that the Service Drone is not interrrupted. If the process is stopped by the enemies or other factors the Service Drone will stop working and will try to continue the job as soon as the threat disappears.
+
+## Enemies AI
+- NavMesh Agents - 4 different AIs are using the NavMesh.
+- NavMesh Zones - 3 zones are added to the build-in ones:
+  - `Urban` - higher cost than the other areas - navigating through this zone is slow.
+  - `Road` - with lower cost than the `Urban` zone - this area is chosen by the enemies when chaising the player as navigating though it is faster
+  - `Airfield` - accessible only for `Base Commanders` and `Commanders`. All other agents will avoid going through the airfield as it is too dangerous.
+  ...
 
 ## Shaders
 ### Disappearence shader
 ### Shield shader
 ### Scan shader
-### Buildings/Ground shader - script
-
-### Buildings/Ground/Laser shader???
 
 ## Particles
 ### Explosion from the intro
-### Portal particles and shader?
+### Portal particles
 ### Gun particles
 ### Hit particles
 
