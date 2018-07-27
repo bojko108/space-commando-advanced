@@ -34,6 +34,9 @@ public class DroneScript : MonoBehaviour
     [Tooltip("Set max angle at which the drone can shoot at enemies")]
     public float MaxAttackAngle = 60f;
 
+    [Tooltip("Set max distance for detecting enemies - this is the maximum size of the sphere collider")]
+    public float EnemyDetectDistance = 200f;
+
     [Tooltip("Sound played on enemy detected. If more than 5 enemies are detected this will be repeated")]
     public AudioClip AlarmSound;
     [Tooltip("Set drone engine sound")]
@@ -424,7 +427,7 @@ public class DroneScript : MonoBehaviour
         if (this.colliderShrink != null) StopCoroutine(this.colliderShrink);
 
         // start expanding the collider
-        while (this.detectionCollider.radius < 200f)
+        while (this.detectionCollider.radius < this.EnemyDetectDistance)
         {
             if (Time.timeScale > 0f)
             {

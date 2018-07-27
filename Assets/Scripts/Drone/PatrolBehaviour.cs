@@ -11,6 +11,10 @@ public class PatrolBehaviour : BaseBehaviour
 
         this.DroneLogic.SignalLight.DronMode = enumDronMode.Patrol;
         this.DroneLogic.DroneShield.DronMode = enumDronMode.Patrol;
+
+        this.NavAgent.speed = this.DroneLogic.PatrolSpeed;
+        this.NavAgent.angularSpeed = this.DroneLogic.PatrolAngularSpeed;
+        this.NavAgent.acceleration = this.DroneLogic.PatrolAcceleration;
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
