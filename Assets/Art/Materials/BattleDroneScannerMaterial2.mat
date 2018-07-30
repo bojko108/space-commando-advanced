@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: BattleDroneScannerMaterialNew
-  m_Shader: {fileID: 4800000, guid: 931bfe0c1e3e7624188d36ea0b23408d, type: 3}
+  m_Name: BattleDroneScannerMaterial2
+  m_Shader: {fileID: 4800000, guid: 8013f2286db4d6e47ba8c45bb7dc39c2, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -18,6 +18,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture_4BD43462:
+        m_Texture: {fileID: 2800000, guid: 56007bb85872fd64fbf9fc5054e68387, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture_CBFBDA47:
+        m_Texture: {fileID: 2800000, guid: 81962903da4ca8d4faf35abb15d8d5bb, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture_DE92A59D:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -67,11 +75,17 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_1516EEB9: 0.54
     - Vector1_1CEF0709: 0
     - Vector1_2092FAFE: 5
     - Vector1_39A63456: 0.09
+    - Vector1_3E9CBB7A: 1
     - Vector1_4C18FAB7: 0
+    - Vector1_5B844BF4: 5
+    - Vector1_6D6A664: 0
+    - Vector1_7079B886: 6.61
     - Vector1_9355ABDA: 100
+    - Vector1_C5289E70: 10
     - Vector1_CD2CC8B0: 1
     - _AlphaClip: 0
     - _Blend: 0
@@ -104,8 +118,13 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_1B3E772A: {r: 0.990566, g: 0, b: 0, a: 0}
+    - Color_27449FE2: {r: 0.00037706122, g: 0, b: 0.5188679, a: 0}
     - Color_A37CE981: {r: 0, g: 0.8875136, b: 1, a: 0}
+    - Color_AD4642DC: {r: 0.66102463, g: 0.7372549, b: 0, a: 0}
     - Color_E9E5616A: {r: 0, g: 0.5132422, b: 1, a: 0}
+    - Color_F5C92E71: {r: 0, g: 0.5730133, b: 1, a: 0}
+    - Vector2_38CA824C: {r: 1, g: 1, b: 0, a: 0}
     - Vector2_DC72B601: {r: 1, g: 2, b: 0, a: 0}
     - _Color: {r: 0, g: 0.3656589, b: 0.65882355, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
