@@ -376,10 +376,10 @@ public class GameManagerScript : MonoBehaviour
         this.Portal.GetComponentInChildren<ParticleSystem>().Play(true);
 
         // increase detect distance for commanders
-        this.IncreaseDetectDistance(Resources.Tags.Commander, 2f);
+        this.IncreaseDetectDistance(Resources.Tags.Commander, 5f);
 
         // increase detect distance for soldiers
-        this.IncreaseDetectDistance(Resources.Tags.Soldier, 2f);
+        this.IncreaseDetectDistance(Resources.Tags.Soldier, 5f);
 
         if (savedGame == false)
         {
