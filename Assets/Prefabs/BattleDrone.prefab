@@ -739,6 +739,7 @@ MonoBehaviour:
   AttackAngularSpeed: 6
   AttackAcceleration: 10
   MaxAttackAngle: 15
+  EnemyDetectDistance: 100
   AlarmSound: {fileID: 8300000, guid: 00481beaa0e2fd649bcddb036727968c, type: 3}
   EngineSound: {fileID: 8300000, guid: 355c0ba205074ce45a8988e3882f9a1b, type: 3}
   PlayerTransform: {fileID: 0}

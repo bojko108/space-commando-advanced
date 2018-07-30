@@ -23,6 +23,7 @@ public class AttackBehaviour : BaseBehaviour
         GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.white;
 
         this.NavAgent.updateRotation = false;
+        //this.NavAgent.stoppingDistance = 10f;
         this.NavAgent.speed = this.DroneLogic.AttackSpeed;
         this.NavAgent.angularSpeed = this.DroneLogic.AttackAngularSpeed;
         this.NavAgent.acceleration = this.DroneLogic.AttackAcceleration;
@@ -32,6 +33,7 @@ public class AttackBehaviour : BaseBehaviour
     {
         this.DroneLogic.SwitchTarget();
 
+        // set destination
         if (Time.frameCount % 10 == 0 && this.DestinationReached())
         {
             if (this.DroneLogic.CurrentTarget == null)
@@ -46,6 +48,12 @@ public class AttackBehaviour : BaseBehaviour
             }
         }
 
+        // faster acceleration when in attack mode
+        //Vector3 dir = this.NavAgent.steeringTarget - this.DroneTransform.position;
+        //float turnAngle = Vector3.Angle(this.DroneTransform.forward, dir);
+        //this.NavAgent.acceleration = turnAngle * this.NavAgent.speed;
+
+        // try to attack target
         if (this.DroneLogic.CurrentTarget != null)
         {
             Vector3 target = this.DroneLogic.CurrentTarget.transform.position;
@@ -58,7 +66,7 @@ public class AttackBehaviour : BaseBehaviour
             Vector3 direction = target - this.DroneTransform.position;
 
             // look at target
-            this.DroneTransform.rotation = Quaternion.Slerp(this.DroneTransform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * this.DroneLogic.AttackAngularSpeed);
+            this.DroneTransform.rotation = Quaternion.Slerp(this.DroneTransform.rotation, Quaternion.LookRotation(direction), Time.fixedDeltaTime * this.DroneLogic.AttackAngularSpeed);
 
             // shoot if target is visible
             if (this.CanSeeTarget(target))
@@ -71,6 +79,7 @@ public class AttackBehaviour : BaseBehaviour
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         this.NavAgent.updateRotation = true;
+        //this.NavAgent.stoppingDistance = 3f;
 
         // to highlight command in UI
         GameObject.FindGameObjectWithTag(Resources.Tags.CommandAttack).GetComponent<UnityEngine.UI.Text>().color = Color.black;
