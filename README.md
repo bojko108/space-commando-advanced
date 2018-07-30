@@ -152,15 +152,25 @@ Uses BT to make decisions. The Service Drone patrols arround the spaceship using
   ...
 
 ## Shaders
+All shaders are created using Shader Graph
+
 ### Disappearence shader
+Applied to the Dark Matter Module material. Animates Dark Matter Module's disappearence when the player gets the part using an evaporator.
+
 ### Shield shader
+Used for the shields of both Battle and Service drones
+
 ### Scan shader
+Used for Battle Drone's scanner
 
 ## Particles
 ### Explosion from the intro
 ### Portal particles
+Used to animate the portal from which the Base Commanders are spawned
 ### Gun particles
+Player's gun particles
 ### Hit particles
+Enemies hit particles - simulates alien blood
 
 ## Enemies
 

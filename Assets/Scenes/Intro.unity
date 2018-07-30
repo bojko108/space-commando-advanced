@@ -1236,7 +1236,7 @@ Prefab:
     - target: {fileID: 198731711527548186, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
         type: 2}
       propertyPath: ColorModule.enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 198731711527548186, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
         type: 2}
@@ -1476,7 +1476,7 @@ Prefab:
     - target: {fileID: 198731711527548186, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
         type: 2}
       propertyPath: TrailModule.widthOverTrail.scalar
-      value: 0.28
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 198731711527548186, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
         type: 2}
@@ -1547,6 +1547,16 @@ Prefab:
         type: 2}
       propertyPath: InitialModule.maxNumParticles
       value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 198731711527548186, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
+        type: 2}
+      propertyPath: TrailModule.widthOverTrail.minMaxState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198731711527548186, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b,
+        type: 2}
+      propertyPath: TrailModule.widthOverTrail.minScalar
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 70cd2bd3d24e4594cb6fab2ae6f0321b, type: 2}
