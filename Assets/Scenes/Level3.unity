@@ -1601,7 +1601,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 545539710}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 427, y: 0, z: 431}
+  m_LocalPosition: {x: 246.2, y: 0, z: 376.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2024141283}
@@ -3014,6 +3014,22 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 196f791ddbbd68e4cb33c0d673942fe5, type: 2}
+    - target: {fileID: 1840711191160012, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168263421385558, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1261879119011296, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1451286139656326, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4e6bf53b888edb544b8a990aba584c27, type: 2}
   m_IsPrefabParent: 0
@@ -3286,8 +3302,8 @@ MonoBehaviour:
   ManageEnemies:
     NumberOfBaseCommanders: 2
     NumberOfCommanders: 15
-    NumberOfSoldiers: 25
-    NumberOfWorkers: 30
+    NumberOfSoldiers: 20
+    NumberOfWorkers: 20
     BaseCommanderPrefab: {fileID: 1395132087209292, guid: 3c3ba9d9749d3404cb86934ef4249863,
       type: 2}
     CommanderPrefab: {fileID: 1457248732179882, guid: 83d72c1a4b49f5a4b813c6366323c4a8,

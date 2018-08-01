@@ -5,6 +5,7 @@ The game is designed for standalone build. There are options for saving and load
 ## Contents
 
 * [Game](#game)
+  * [Scenes](#scenes)
   * [Main Game Menu](#main-game-menu)
   * [Gameplay](#gameplay)
 * [Game Setup](#game-setup)
@@ -14,7 +15,7 @@ The game is designed for standalone build. There are options for saving and load
   * [Drones](#drones)
     * [Battle Drone](#battle-drone)
     * [Service Drone](#service-drone)
-  * [AI](#ai)
+  * [Enemies AI](#enemies-ai)
   * [Shaders](#shaders)
   * [Particles](#particles)
   * [Enemies](#enemies)
@@ -56,6 +57,15 @@ The game is designed for standalone build. There are options for saving and load
 
 # Game
 
+## Scenes
+
+There are several scenes in the game:
+
+* `Menu` - starting scene for the game which contains the main menu
+* `Intro` - intro animation
+* `Level3` - main scene - this is the scene with the gameplay
+* `Outro` - outro scene - when the game finish
+
 ### Main Game Menu
 
 Options for:
@@ -64,21 +74,22 @@ Options for:
 * Continue from last save
 * Delete save
 * View controls
+* Drones information
 * Quit game
 
 ### Gameplay
 
 After a fierce space battle the player manages to escape but his spaceship is badly damaged. His only chance is to look for spare parts for the ship in an old abandoned base, located on a nearby planet. The problem is the base has been taken over by hostile aliens.
 
-The Player has two drones that help him during the game - one battle drone and one service drone. The Battle Drone can patrol and attack enemies as well as scan the base and give the player directions to important locations. The Service Drone can repair the spaceship using the parts, found by the player.
+The Player has two drones that help him during the game - one `battle drone` and one `service drone`. The `Battle Drone` can patrol and attack enemies as well as scan the base and give the player directions to important locations. The `Service Drone` can repair the `Spaceship` using the parts, found by the player.
 
-The player lands his spaceship near the old base and is now searching for supplies and spare parts to repair it. Player's ship has a broken Dark Matter Module, which can be found in the Storage Room. The game starts at this point.
+The player lands his spaceship near the old base and is now searching for supplies and spare parts to repair it. Player's ship has a broken `Dark Matter Module`, which can be found in the `Storage Room`. The game starts at this point.
 
-When the game starts, the player is running out of oxygen and has to find the Main Control Room to turn Base Life Support Systems on. The access to the Main Computer is blocked by a password. The player has to decipher the password in order to login, turn Life Support Systems on and find the Storage Room location. When the player is near the Main Computer, the game waits for him to enter the password. After the player has the password, his oxygen level is set to full and no longer decreases. The minimap is also updated: `Buildings` layer is added to the map. However, going to the Main Computer Room is optional as the player has enough oxygen for finding the spare parts and repairing the spaceship if he moves fast enough.
+When the game starts, the player is running out of oxygen and has to find the `Main Control Room` to turn `Base Life Support Systems` on. The access to the `Main Computer` is blocked by a password. The player has to decipher the password in order to login, turn Life Support Systems on and find the Storage Room location. When the player is near the `Main Computer`, the game waits for him to enter the password. After the player has the password, his oxygen level is set to full and no longer decreases. The minimap is also updated: `Buildings` layer is added to the map. However, going to the `Main Control Room` is optional as the player has enough oxygen for finding the spare parts and repairing the `Spaceship` if he moves fast enough.
 
-After the player locates and takes the Dark Matter Module, he can return and repair the Spaceship. At this point enemies detect distance will be increased and `Base Commanders` will be spawned.
+After the player locates and takes the `Dark Matter Module`, he can return and repair the `Spaceship`. At this point enemies detect distance will be increased and `Base Commanders` will be spawned.
 
-After the Player delivers the Dark Matter Module to the Service Drone, it can start repairing the Ship. The Service Drone needs time to finish the task so the Player has to survive until the drone is ready with the repair job!
+After the Player delivers the `Dark Matter Module` to the `Service Drone`, it can start repairing the Ship. The `Service Drone` needs time to finish the task so the Player has to survive until the drone is ready with the repair job!
 
 # Game setup
 
@@ -155,7 +166,7 @@ Uses BT to make decisions. The Service Drone patrols arround the spaceship using
 All shaders are created using Shader Graph
 
 ### Disappearence shader
-Applied to the Dark Matter Module material. Animates Dark Matter Module's disappearence when the player gets the part using an evaporator.
+Applied to the Dark Matter Module material after the player founds it. Animates Dark Matter Module's disappearence when the player gets the part using an evaporator.
 
 ### Shield shader
 Used for the shields of both Battle and Service drones
