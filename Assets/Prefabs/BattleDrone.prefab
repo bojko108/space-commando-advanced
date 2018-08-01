@@ -737,7 +737,7 @@ MonoBehaviour:
   PatrolAcceleration: 5
   AttackSpeed: 25
   AttackAngularSpeed: 6
-  AttackAcceleration: 10
+  AttackAcceleration: 50
   MaxAttackAngle: 15
   EnemyDetectDistance: 100
   AlarmSound: {fileID: 8300000, guid: 00481beaa0e2fd649bcddb036727968c, type: 3}
