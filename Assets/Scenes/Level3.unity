@@ -91,7 +91,7 @@ LightmapSettings:
     m_ShowResolutionOverlay: 1
   m_LightingDataAsset: {fileID: 112000002, guid: ca7111848c7a8864cb978278bcf61d99,
     type: 2}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3280,9 +3280,9 @@ MonoBehaviour:
   Portal: {fileID: 411801684}
   ManageEnemies:
     NumberOfBaseCommanders: 2
-    NumberOfCommanders: 10
+    NumberOfCommanders: 20
     NumberOfSoldiers: 20
-    NumberOfWorkers: 15
+    NumberOfWorkers: 20
     BaseCommanderPrefab: {fileID: 1395132087209292, guid: 3c3ba9d9749d3404cb86934ef4249863,
       type: 2}
     CommanderPrefab: {fileID: 1457248732179882, guid: 83d72c1a4b49f5a4b813c6366323c4a8,
